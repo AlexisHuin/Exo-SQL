@@ -1,0 +1,46 @@
+#docker-compose build --no-cache 
+version: "3"
+services:
+  nginx:
+    image: nginx
+    container_name: dockerDefault_nginx
+    #restart: always
+    links:
+      - php
+    volumes:
+      - ./Projects/:/var/www/html:ro
+      - ./nginx/:/etc/nginx/conf.d/
+    ports:
+      - 8000:80
+      
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dockerDefault_php
+    volumes:
+      - ./Projects:/var/www/html/
+    tmpfs: /tmp
+    depends_on:
+      - mariadb
+    links:
+      - mariadb 
+
+  mariadb:
+    image: mariadb:latest
+    container_name: dockerDefault_mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_User=root
+      - MARIADB_PASSWORD=root  
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: dockerDefault_phpmyadmin
+    ports:
+      - 9000:80
+    links:
+      - mariadb:db
+    environment:
+      - UPLOAD_LIMIT=4800000000000
+
