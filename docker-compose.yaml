@@ -3,7 +3,7 @@ version: "3"
 services:
   nginx:
     image: nginx
-    container_name: dockerDefault_nginx
+    container_name: testPatrice_nginx
     #restart: always
     links:
       - php
@@ -18,7 +18,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: dockerDefault_php
+    container_name: testPatrice_php
     volumes:
       - ./Projects:/var/www/html/
     tmpfs: /tmp
@@ -29,14 +29,14 @@ services:
 
   mariadb:
     image: mariadb:latest
-    container_name: dockerDefault_mariadb
+    container_name: testPatrice_mariadb
     environment:
       - MARIADB_ROOT_PASSWORD=root
       - MARIADB_User=root
       - MARIADB_PASSWORD=root  
   phpmyadmin:
     image: phpmyadmin
-    container_name: dockerDefault_phpmyadmin
+    container_name: testPatrice_phpmyadmin
     ports:
       - 9000:80
     links:
